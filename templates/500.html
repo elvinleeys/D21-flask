@@ -1,0 +1,10 @@
+{% extends "base.html" %}  {# 500 화면도 base.html 틀을 물려받아요 #}
+
+{% block title %}잠시 문제가 생겼어요 - 클래스로 마켓{% endblock %}  {# 브라우저 탭 제목 #}
+
+{% block content %}  {# 틀의 본문 빈칸을 채워요 #}
+<p class="eyebrow">500</p>
+<h1 class="page-title">잠시 문제가 생겼어요</h1>
+<p class="lead">저희 쪽 문제예요. 잠시 뒤 다시 시도해 주세요.</p>  {# 사용자 잘못이 아니라고 알려줘요 (에러 내용은 보여주지 않아요) #}
+<a class="chip is-active" href="{{ url_for('home') }}">홈으로 가기</a>  {# 홈으로 가는 링크 #}
+{% endblock %}

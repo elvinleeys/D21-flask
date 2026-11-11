@@ -1,0 +1,34 @@
+{# 카드 한 장. 목록(classes.html)과 상세(detail.html)가 함께 써요 #}
+{# no_link 를 정해두면 링크 없는 상자, 아니면 누르면 상세로 가는 링크 #}
+{% set tag = 'div' if no_link else 'a' %}
+<{{ tag }} class="card"{% if not no_link %} href="{{ url_for('class_detail', class_id=c.id) }}"{% endif %}>
+  <div class="card-top">
+    <div class="card-meta">
+      <span class="badge">{{ c.category }}</span>  {# 카테고리 (라임색 배지) #}
+      <span class="area">{{ c.region }}</span>     {# 지역 #}
+    </div>
+    <strong class="card-title">{{ c.name }}</strong>  {# 클래스명 #}
+  </div>
+
+  <div class="card-bottom">
+    <div class="price">
+      {% if c.on_sale %}  {# 할인 중이면: 정가 취소선 + 할인율 + 판매가 #}
+        <s class="price-original">{{ c.price_text }}</s>
+        <span class="price-now"><span class="discount">{{ c.discount_pct }}%</span> {{ c.sell_text }}</span>
+      {% elif c.sell_price is not none %}  {# 할인 없으면: 판매가만 #}
+        <span class="price-now">{{ c.sell_text }}</span>
+      {% else %}  {# 가격이 비었으면: '가격 문의' #}
+        <span class="price-ask">{{ c.sell_text }}</span>
+      {% endif %}
+    </div>
+
+    {% if c.rating is not none %}  {# 평점이 있으면: 별 + 평점 (리뷰 수) #}
+      <span class="rating">
+        <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>
+        <b>{{ '%.1f'|format(c.rating) }}</b> ({{ '{:,}'.format(c.reviews) }})
+      </span>
+    {% else %}  {# 평점이 비었으면: '아직 리뷰가 없어요' #}
+      <span class="no-review">{{ c.rating_text }}</span>
+    {% endif %}
+  </div>
+</{{ tag }}>

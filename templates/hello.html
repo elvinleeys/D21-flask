@@ -1,0 +1,6 @@
+{% extends "base.html" %}  {# base.html 틀을 물려받아요 #}
+
+{% block content %}  {# 틀의 본문 빈칸을 채워요 #}
+<p class="eyebrow">HELLO</p>
+<h1 class="page-title">안녕하세요, <span class="hl">{{ name }}</span> 님!</h1>  {# {{ name }}: app.py가 넘겨준 이름이 들어가요 (자동으로 안전하게 바뀌어요) #}
+{% endblock %}

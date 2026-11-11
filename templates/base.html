@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 화면마다 제목을 바꿀 수 있는 빈칸 (안 채우면 '클래스로 마켓') -->
+  <title>{% block title %}클래스로 마켓{% endblock %}</title>
+  <!-- Gothic A1 글꼴 불러오기 (다크+라임 테마 글꼴) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- static/style.css 꾸밈 파일 연결 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- 머리말: 서비스 이름 + 메뉴 (모든 화면 공통) -->
+  <header class="site-header">
+    <a class="logo" href="{{ url_for('home') }}">클래스로 마켓</a>
+    <nav class="site-nav">
+      <a href="{{ url_for('home') }}">홈</a>
+      <a href="{{ url_for('class_list') }}">클래스</a>
+      <a href="{{ url_for('about') }}">소개</a>
+      <a href="{{ url_for('wishlist') }}">찜 목록 ({{ session.get('wishlist', [])|length }})</a>  <!-- 세션에 담긴 찜 개수 -->
+
+    </nav>
+  </header>
+
+  <!-- 본문: 자식 화면이 채우는 빈칸 -->
+  <main class="container">
+    <!-- 한 번만 보이는 안내 (꺼내서 보여주면 사라져요 → 새로고침하면 안 보여요) -->
+    {% for message in get_flashed_messages() %}
+    <p class="flash" role="status">{{ message }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- 바닥글 (모든 화면 공통) -->
+  <footer class="site-footer">© 2026 클래스로 마켓</footer>
+</body>
+</html>

@@ -1,0 +1,441 @@
+/* =========================================
+   원데이 클래스 - 다크 + 라임 테마
+   색을 바꾸려면 :root 의 변수만 고치면 됩니다.
+   ========================================= */
+:root {
+  --bg: #121212;          /* 페이지 배경 */
+  --surface: #1e1e1e;     /* 카드·버튼 배경 */
+  --line: #3a3a3a;        /* 테두리, 점선 */
+  --line-soft: #2c2c2c;   /* 카드 테두리 */
+  --text: #f5f5f5;        /* 기본 글자 */
+  --text-sub: #a8a8a8;    /* 보조 글자 */
+  --text-muted: #8f8f8f;  /* 취소선 정가 */
+  --lime: #c8f04a;        /* 포인트 색 */
+  --on-lime: #121212;     /* 라임 위 글자 */
+
+  --radius-card: 20px;
+  --radius-control: 12px;
+  --font: 'Gothic A1', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+}
+
+a { color: var(--text); }
+a:hover { color: var(--lime); }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* 화면에는 숨기고 화면 낭독기에는 읽히게 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- 상단 제목 ---------- */
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--lime);
+}
+
+.page-title {
+  margin: 0 0 24px;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+/* ---------- 카테고리 버튼 ---------- */
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;           /* 휴대폰에서 가로 스크롤 */
+  margin: 0 -16px;
+  padding: 0 16px 16px;
+  scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex: none;
+  height: 44px;               /* 터치 영역 최소 44px */
+  padding: 0 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: #e0e0e0;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--lime); }
+.chip.is-active {
+  border-color: var(--lime);
+  background: var(--lime);
+  color: var(--on-lime);
+  font-weight: 900;
+}
+
+/* ---------- 개수 + 정렬 ---------- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.count {
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+.sort-select,
+.apply-btn {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+.apply-btn { margin-left: 8px; cursor: pointer; }
+
+.chip:focus-visible,
+.sort-select:focus-visible,
+.card:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+
+/* ---------- 카드 목록 ----------
+   카드가 최소 260px 로 들어갈 수 있는 만큼 열을 만듦
+   → 휴대폰 1열, 태블릿 2열, PC 3~4열 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 180px;
+  padding: 20px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+a.card:hover { border-color: var(--lime); color: var(--text); }
+
+.card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border: 1px solid var(--lime);
+  border-radius: 999px;
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.area { color: var(--text-sub); }
+
+.card-title {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+}
+
+.card-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;            /* 카드가 좁으면 평점이 아래 줄로 */
+  gap: 8px 12px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+
+/* ---------- 가격 ---------- */
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.price-original {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.price-now {
+  font-size: 20px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.discount { color: var(--lime); }
+.price-ask {
+  font-size: 18px;
+  font-weight: 700;
+  color: #d0d0d0;
+}
+
+/* ---------- 평점·리뷰 ---------- */
+.rating,
+.no-review {
+  font-size: 14px;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.rating svg { fill: var(--lime); }
+.rating b { color: var(--text); }
+.no-review { font-size: 13px; }
+
+.empty {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--text-sub);
+}
+
+/* =========================================
+   클래스로 마켓 전용 추가 (위는 flask-dark-lime 원본 그대로)
+   ========================================= */
+
+/* ---------- 머리말 (서비스 이름 + 메뉴) ---------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.logo {
+  color: var(--lime);
+  font-size: 18px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.site-nav a {
+  color: var(--text-sub);
+  font-weight: 500;
+  text-decoration: none;
+}
+.site-nav a:hover { color: var(--lime); }
+
+/* ---------- 바닥글 ---------- */
+.site-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ---------- 링크로 쓰는 카테고리 버튼 ---------- */
+a.chip {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+a.chip.is-active:hover { color: var(--on-lime); }
+
+/* ---------- 본문 글자 ---------- */
+.lead {
+  margin: 0 0 24px;
+  color: var(--text-sub);
+  font-size: 16px;
+}
+
+.hl { color: var(--lime); }   /* 강조 글자 (라임) */
+
+/* ---------- 상세 화면 ---------- */
+.back {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--lime);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.detail {
+  max-width: 560px;
+}
+
+.detail .card-title {
+  font-size: 28px;
+}
+
+/* ---------- 한 번만 보이는 안내 (flash) ---------- */
+.flash {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--lime);
+  border-radius: var(--radius-control);
+  color: var(--lime);
+  font-weight: 700;
+}
+
+/* ---------- 찜하기 버튼 ---------- */
+.wish-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 12px;
+  border: 1px solid var(--lime);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--lime);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.wish-btn.is-active {          /* 찜한 상태: 라임으로 꽉 채워요 */
+  background: var(--lime);
+  color: var(--on-lime);
+}
+.wish-btn:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+
+/* ---------- 수강후기 ---------- */
+.reviews { margin-top: 32px; }
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.review {
+  padding: 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stars { color: var(--lime); letter-spacing: 1px; }
+
+.review-body {
+  margin: 8px 0 0;
+  color: var(--text-sub);
+  white-space: pre-line;      /* 후기에서 줄바꿈한 곳을 그대로 보여줘요 */
+  overflow-wrap: anywhere;    /* 띄어쓰기 없는 긴 글자도 카드 밖으로 안 나가게 */
+}
+
+.reviews .empty { padding: 24px 0; }
+
+/* ---------- 후기 남기기 폼 ---------- */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review-form label {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea {
+  min-height: 44px;           /* 터치 영역 최소 44px */
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+}
+.review-form textarea { resize: vertical; }
+
+.submit-btn {
+  height: 48px;
+  margin-top: 12px;
+  border: none;
+  border-radius: var(--radius-control);
+  background: var(--lime);
+  color: var(--on-lime);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.review-form input:focus-visible,
+.review-form select:focus-visible,
+.review-form textarea:focus-visible,
+.submit-btn:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}

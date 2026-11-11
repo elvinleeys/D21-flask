@@ -1,0 +1,45 @@
+{% extends "base.html" %}  {# base.html 틀을 물려받아요 #}
+
+{% block title %}클래스 목록 - 클래스로 마켓{% endblock %}  {# 브라우저 탭 제목 #}
+
+{% block content %}  {# 틀의 본문 빈칸을 채워요 #}
+<p class="eyebrow">WEEKEND CLASS</p>
+<h1 class="page-title">이번 주말엔<br>뭘 배워볼까?</h1>
+
+{# 카테고리 버튼: 누르면 /classes?category=공예 로 이동 (지금 고른 정렬은 그대로 유지) #}
+<nav class="chips" aria-label="카테고리">
+  <a class="chip{% if not category %} is-active{% endif %}"
+     href="{{ url_for('class_list', sort=sort or none) }}"
+     {% if not category %}aria-current="page"{% endif %}>전체</a>
+  {% for cat in categories %}  {# 카테고리마다 버튼 하나 #}
+  <a class="chip{% if cat == category %} is-active{% endif %}"
+     href="{{ url_for('class_list', category=cat, sort=sort or none) }}"
+     {% if cat == category %}aria-current="page"{% endif %}>{{ cat }}</a>
+  {% endfor %}
+</nav>
+
+{# 개수 + 정렬 상자: 정렬을 바꾸면 바로 이동 (지금 고른 카테고리는 그대로 유지) #}
+<form class="toolbar" method="get" action="{{ url_for('class_list') }}">
+  <span class="count">{{ classes|length }}개의 클래스</span>
+  <div>
+    <input type="hidden" name="category" value="{{ category }}">  {# 지금 카테고리를 같이 보내요 #}
+    <label for="sort" class="sr-only">정렬</label>
+    <select id="sort" name="sort" class="sort-select" onchange="this.form.submit()">  {# 바꾸는 즉시 제출 #}
+      <option value="">기본</option>
+      <option value="price" {% if sort == "price" %}selected{% endif %}>가격 낮은 순</option>
+      <option value="rating" {% if sort == "rating" %}selected{% endif %}>평점 높은 순</option>
+    </select>
+    <noscript><button type="submit" class="apply-btn">적용</button></noscript>  {# 자바스크립트가 꺼져 있을 때만 보이는 버튼 #}
+  </div>
+</form>
+
+{% if classes %}  {# 결과가 1개 이상이면 카드를 보여줘요 #}
+<div class="card-grid">
+  {% for c in classes %}  {# 클래스마다 카드 한 장 #}
+    {% include "_class_card.html" %}
+  {% endfor %}
+</div>
+{% else %}  {# 결과가 0개면 #}
+<p class="empty">조건에 맞는 클래스가 없어요</p>
+{% endif %}
+{% endblock %}
